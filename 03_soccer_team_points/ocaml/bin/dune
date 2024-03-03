@@ -1,0 +1,3 @@
+(executable
+ (public_name soccer_team_points)
+ (name main))
