@@ -1,0 +1,3 @@
+(executable
+ (public_name improved_salary_increase_by_category)
+ (name main))
