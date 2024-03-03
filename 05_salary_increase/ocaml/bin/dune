@@ -1,0 +1,3 @@
+(executable
+ (public_name salary_increase)
+ (name main))
