@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -39,21 +41,22 @@ public class Main {
     private static double getPurchaseTotal() {
         double total;
 
-        Scanner input = new Scanner(System.in);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
             try {
                 System.out.println("Ingrese el valor de la compra del cliente:");
-                 total = input.nextDouble();
+                 total = Integer.parseInt(input.readLine());
                 if (total <= 0) {
-                    System.out.println("El valor de la compra debe ser un número mayor a cero\n");
+                    System.err.println("El valor de la compra debe ser un número mayor a cero\n");
                     continue;
                 };
 
                 break;
-            } catch (Exception err) {
-                input.nextLine();
-                System.out.println("El valor de la compra debe ser un número entero o decimal válido\n");
+            } catch (NumberFormatException err) {
+                System.err.println("El valor de la compra debe ser un número entero o decimal válido\n");
+            } catch (IOException err) {
+                System.err.println(err.getMessage());
             }
         }
 
@@ -63,17 +66,28 @@ public class Main {
     private static Day getPurchaseDay() {
         Day day;
 
-        Scanner input = new Scanner(System.in);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("\nLunes (L)\nMartes (M)\nMiercoles(W)\nJueves (J)\nViernes (V)\nSabado (S)\nDomingo (D)");
 
         while (true) {
             try {
                 System.out.println("Ingrese la letra que corresponde al día de la compra según la lista mostrada:");
-                day = Day.fromString(input.nextLine());
+                day = switch (input.readLine().toLowerCase()) {
+                    case "l" -> Day.MONDAY;
+                    case "m" -> Day.TUESDAY;
+                    case "w" -> Day.WEDNESDAY;
+                    case "j" -> Day.THURSDAY;
+                    case "v" -> Day.FRIDAY;
+                    case "s" -> Day.SATURDAY;
+                    case "d" -> Day.SUNDAY;
+                    default -> {
+                        throw new Exception("Día inválido. Únicamente se aceptan: L|M|W|J|V|S|D\n");
+                    }
+                };
                 break;
             } catch (Exception err) {
-                System.out.println("Día invalido \n");
+                System.err.println(err.getMessage());
             }
         }
 
